@@ -1,0 +1,36 @@
+{
+  "name": "upstream-docs",
+  "version": "0.1.0",
+  "description": "Verify version-sensitive dependency claims with exact-version upstream evidence.",
+  "author": {
+    "name": "Konstantin Kashapov",
+    "url": "https://github.com/KashapovK"
+  },
+  "homepage": "https://github.com/KashapovK/upstream-docs#readme",
+  "repository": "https://github.com/KashapovK/upstream-docs",
+  "license": "MIT",
+  "keywords": [
+    "agent-skills",
+    "documentation",
+    "dependencies",
+    "research",
+    "verification"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Upstream Docs",
+    "shortDescription": "Verify version-sensitive dependency claims.",
+    "longDescription": "Build reproducible verdicts from repository pins, releases, exact-version official docs, and tagged source.",
+    "developerName": "Konstantin Kashapov",
+    "category": "Productivity",
+    "capabilities": [
+      "Read"
+    ],
+    "websiteURL": "https://github.com/KashapovK/upstream-docs",
+    "defaultPrompt": [
+      "Verify this dependency claim against the target version.",
+      "Check whether this feature is stable in the latest release.",
+      "Resolve the conflict between docs and tagged source."
+    ]
+  }
+}
