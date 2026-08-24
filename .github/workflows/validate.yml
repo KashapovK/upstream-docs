@@ -79,6 +79,38 @@ jobs:
               )
           PY
 
+      - name: Check release version consistency
+        run: |
+          python3 - <<'PY'
+          import json
+          import re
+          from pathlib import Path
+
+          skill = Path("skills/upstream-docs/SKILL.md").read_text(encoding="utf-8")
+          match = re.search(r'^  version: "([^"]+)"$', skill, flags=re.MULTILINE)
+          if match is None:
+              raise SystemExit("Skill metadata.version is missing or malformed")
+
+          manifest = json.loads(
+              Path(".codex-plugin/plugin.json").read_text(encoding="utf-8")
+          )
+          if match.group(1) != manifest["version"]:
+              raise SystemExit(
+                  "Release versions differ: "
+                  f"skill={match.group(1)} manifest={manifest['version']}"
+              )
+
+          changelog = Path("CHANGELOG.md").read_text(encoding="utf-8")
+          heading = re.compile(
+              rf"^## {re.escape(manifest['version'])} - \d{{4}}-\d{{2}}-\d{{2}}$",
+              flags=re.MULTILINE,
+          )
+          if heading.search(changelog) is None:
+              raise SystemExit(
+                  f"CHANGELOG.md is missing a dated {manifest['version']} release heading"
+              )
+          PY
+
       - name: Check whitespace errors
         run: git diff --check "$(git hash-object -t tree /dev/null)" HEAD
 
