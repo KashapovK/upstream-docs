@@ -1,7 +1,7 @@
 {
   "name": "upstream-docs",
-  "version": "0.1.0",
-  "description": "Verify version-sensitive dependency claims with exact-version upstream evidence.",
+  "version": "0.2.0",
+  "description": "A version-aware evidence gate for dependency, framework, and platform API claims.",
   "author": {
     "name": "Konstantin Kashapov",
     "url": "https://github.com/KashapovK"
@@ -19,8 +19,8 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Upstream Docs",
-    "shortDescription": "Verify version-sensitive dependency claims.",
-    "longDescription": "Build reproducible verdicts from repository pins, releases, exact-version official docs, and tagged source.",
+    "shortDescription": "Know which version your AI is talking about.",
+    "longDescription": "Keep repository constraints, resolved versions, migration targets, stable releases, and prerelease evidence separate before accepting an upstream claim.",
     "developerName": "Konstantin Kashapov",
     "category": "Productivity",
     "capabilities": [
@@ -28,9 +28,9 @@
     ],
     "websiteURL": "https://github.com/KashapovK/upstream-docs",
     "defaultPrompt": [
-      "Verify this dependency claim against the target version.",
-      "Check whether this feature is stable in the latest release.",
-      "Resolve the conflict between docs and tagged source."
+      "Verify this API claim for an exact target version.",
+      "Check whether this feature is stable in the current release.",
+      "Compare the repository version with this migration target."
     ]
   }
 }
