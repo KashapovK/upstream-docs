@@ -1,10 +1,10 @@
 ---
 name: upstream-docs
-description: Verify dependency, framework, and platform API claims against exact-version upstream evidence. Use for current/latest/stable/deprecated/experimental/supported claims, migrations where repository constraints and target versions differ, or conflicts between official docs, releases, tagged source, and tests. Return VERIFIED, CONTRADICTED, or INCONCLUSIVE. Skip purely local code work.
+description: Verify dependency, framework, and platform API claims—and the resolved targets of version-sensitive install, update, or migration commands—against exact-version upstream evidence. Use for current/latest/stable/deprecated/experimental/supported claims, repository-to-target migrations, or conflicts between official docs, releases, tagged source, and tests. Return VERIFIED, CONTRADICTED, or INCONCLUSIVE. Skip purely local code work.
 license: MIT
 metadata:
   author: KashapovK
-  version: "0.2.0"
+  version: "0.3.0"
 ---
 
 # Upstream evidence gate
@@ -106,7 +106,15 @@ Include only applicable rows. Mark `not applicable` or `unavailable` with a conc
 
 Place direct official links next to the claims they support, label inference separately from sourced fact, and re-check time-sensitive facts if upstream changes during the research window.
 
-## 6. Publish per-claim verdicts
+## 6. Match verified targets to downstream actions
+
+Version-sensitive install, update, and migration commands are part of the gate even when upstream capability is already `VERIFIED`. Before a downstream mutation, resolve the command's actual target, including any package version or registry dist-tag, Git ref, and repository default branch used when no ref is supplied.
+
+Compare that action target with the verified target and its channel. An unpinned command that implicitly follows a repository default branch is not target-matched merely because it contains the same artifact today. An explicit moving ref is target-matched only when the verified target is that named current channel or continuously updated source state. In particular, a verified stable target cannot be implemented by a command that resolves to `main`, `canary`, or another prerelease channel.
+
+When targets differ, do not run the command. Pin the verified release, tag, or artifact only when its existence and mapping are established by target-matched evidence; otherwise return `INCONCLUSIVE`. Do not substitute another channel. For a source with no formal release lifecycle, do not invent a stable tag: establish its canonical continuously updated source state, label it as such, and match the action to an explicit ref or commit for that state.
+
+## 7. Publish per-claim verdicts
 
 Every atomic material claim receives exactly one canonical verdict:
 

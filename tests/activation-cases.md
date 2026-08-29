@@ -64,6 +64,24 @@ Use these cases in a clean agent session with the installed skill. Record the ob
 - Expected activation: Activate `upstream-docs` because a current stable claim may be contaminated by prerelease evidence.
 - Expected result: Use `CURRENT` for the stable channel, establish latest stable independently, and do not treat canary-only evidence as proof of stable support.
 
+### 11. Stable target versus a canary default branch
+
+- Prompt: `This project uses Next.js 16.3.3 stable. Its tagged guide recommends next-dev-loop. Install that skill from vercel/next.js; the repository default branch is canary.`
+- Expected activation: Activate `upstream-docs` because the version-sensitive install command must resolve to the verified stable target.
+- Expected result: Use `EXACT_TARGET`; verify the `v16.3.3` tag and skill artifact; reject an unpinned command that resolves through the `canary` default branch; then pin the verified stable tag or return `INCONCLUSIVE` before installation.
+
+### 12. Explicit latest-canary request
+
+- Prompt: `Install the latest canary next-dev-loop skill from vercel/next.js.`
+- Expected activation: Activate `upstream-docs` because the requested install target is a moving prerelease channel.
+- Expected result: Use `CURRENT` for the canary channel; verify the repository's exact canary ref and the skill artifact there; allow only an install command explicitly matched to that channel, without substituting stable or another prerelease.
+
+### 13. Canonical source without a release lifecycle
+
+- Prompt: `Install workflow-from-chats from its canonical cursor/plugins source. The project has no formal release lifecycle; use its current canonical source state and do not call it stable.`
+- Expected activation: Activate `upstream-docs` because the install command still needs a verified source target even though no release channel exists.
+- Expected result: Verify that the repository has no release lifecycle, establish its canonical continuously updated source state, label it as such, and match the install command to an explicit ref or commit without inventing a stable tag.
+
 ## Negative cases
 
 ### 1. Rename a local function
@@ -115,3 +133,13 @@ The suite used the CLI's config-free default reasoning setting for cases 8-10 an
 | Negative 1 — Rename local function | Do not activate | Not activated | Pass — searched only local workspace context and requested the missing project. |
 | Negative 2 — Format component | Do not activate | Not activated | Pass — searched only local workspace context and requested the missing component. |
 | Negative 3 — Explain local algorithm | Do not activate | Not activated | Pass — searched only local workspace context and requested the missing repository source. |
+
+## 0.3.0 execution record
+
+Executed three target-to-action regression cases with Codex CLI `0.151.0-alpha.7.1` on 2026-08-29. Each case ran in a new ephemeral read-only session against a clean temporary workspace containing only the candidate `upstream-docs` skill, installed locally with the exact stable Skills CLI `1.5.23`. The prompts added a read-only clause so the agent had to return the eligible command or blocker without performing the installation. No private repository code or configuration was provided to documentation or search services.
+
+| Case | Expected activation | Observed activation | Result |
+|---|---|---|---|
+| Positive 11 — Stable target versus canary default | Activate | Activated alongside the built-in installer | Pass — used `EXACT_TARGET`, rejected the unpinned canary-resolving command, and selected explicit ref `v16.3.3`. |
+| Positive 12 — Explicit latest canary | Activate | Activated alongside the built-in installer | Pass after refinement — used `CURRENT` for canary and allowed explicit ref `canary` only after channel-matched verification. |
+| Positive 13 — Source without release lifecycle | Activate | Activated alongside the built-in installer | Pass — used `CURRENT`, pinned the verified canonical source commit, and labeled it continuously updated rather than stable. |
