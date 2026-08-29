@@ -4,7 +4,7 @@ description: Verify dependency, framework, and platform API claims—and the res
 license: MIT
 metadata:
   author: KashapovK
-  version: "0.3.0"
+  version: "0.3.1"
 ---
 
 # Upstream evidence gate

@@ -24,25 +24,25 @@ Upstream Docs keeps those targets separate before a version-sensitive claim is a
 Install every skill in the repository:
 
 ```bash
-npx skills add https://github.com/KashapovK/upstream-docs/tree/v0.3.0
+npx skills add https://github.com/KashapovK/upstream-docs/tree/v0.3.1
 ```
 
 Install only `upstream-docs`:
 
 ```bash
-npx skills add https://github.com/KashapovK/upstream-docs/tree/v0.3.0 --skill upstream-docs
+npx skills add https://github.com/KashapovK/upstream-docs/tree/v0.3.1 --skill upstream-docs
 ```
 
 Try it without installing:
 
 ```bash
-npx skills use https://github.com/KashapovK/upstream-docs/tree/v0.3.0 --skill upstream-docs
+npx skills use https://github.com/KashapovK/upstream-docs/tree/v0.3.1 --skill upstream-docs
 ```
 
 Install or replace a project copy with the verified stable release:
 
 ```bash
-npx skills add https://github.com/KashapovK/upstream-docs/tree/v0.3.0 --skill upstream-docs -y
+npx skills add https://github.com/KashapovK/upstream-docs/tree/v0.3.1 --skill upstream-docs -y
 ```
 
 These examples pin the source tag so the installed target matches this documented release. Use another explicit ref only when that version or channel is the intended target.

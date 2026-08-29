@@ -1,6 +1,6 @@
 {
   "name": "upstream-docs",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A version-aware evidence gate for dependency, framework, and platform API claims.",
   "author": {
     "name": "Konstantin Kashapov",

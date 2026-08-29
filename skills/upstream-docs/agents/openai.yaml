@@ -1,0 +1,7 @@
+interface:
+  display_name: "Upstream Docs"
+  short_description: "Know which version your AI is talking about."
+  default_prompt: "Use $upstream-docs to verify a version- or channel-sensitive upstream claim against exact-target evidence before relying on it or running a dependent command."
+
+policy:
+  allow_implicit_invocation: true

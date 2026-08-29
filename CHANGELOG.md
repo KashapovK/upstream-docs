@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.3.1 - 2026-08-29
+
+### Added
+
+- Added OpenAI skill metadata for standalone UI presentation, explicit invocation, and automatic discovery.
+
+### Changed
+
+- Added CI validation that the OpenAI skill metadata remains valid and aligned with the plugin manifest.
+
 ## 0.3.0 - 2026-08-29
 
 ### Changed

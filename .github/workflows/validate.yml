@@ -26,6 +26,50 @@ jobs:
       - name: Validate skill
         run: skills-ref validate ./skills/upstream-docs
 
+      - name: Validate OpenAI skill metadata
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          from strictyaml import Bool, Map, Str, load
+
+          schema = Map(
+              {
+                  "interface": Map(
+                      {
+                          "display_name": Str(),
+                          "short_description": Str(),
+                          "default_prompt": Str(),
+                      }
+                  ),
+                  "policy": Map({"allow_implicit_invocation": Bool()}),
+              }
+          )
+          metadata = load(
+              Path("skills/upstream-docs/agents/openai.yaml").read_text(
+                  encoding="utf-8"
+              ),
+              schema,
+          ).data
+          manifest = json.loads(
+              Path(".codex-plugin/plugin.json").read_text(encoding="utf-8")
+          )
+
+          interface = metadata["interface"]
+          plugin_interface = manifest["interface"]
+          if interface["display_name"] != plugin_interface["displayName"]:
+              raise SystemExit("OpenAI and plugin display names differ")
+          if interface["short_description"] != plugin_interface["shortDescription"]:
+              raise SystemExit("OpenAI and plugin short descriptions differ")
+          if not 25 <= len(interface["short_description"]) <= 64:
+              raise SystemExit("OpenAI short_description must be 25-64 characters")
+          if "$upstream-docs" not in interface["default_prompt"]:
+              raise SystemExit("OpenAI default_prompt must mention $upstream-docs")
+          if metadata["policy"]["allow_implicit_invocation"] is not True:
+              raise SystemExit("upstream-docs must allow implicit invocation")
+          PY
+
       - name: Validate plugin manifest
         run: |
           python3 - <<'PY'
