@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.3.0 - 2026-08-29
+
+### Changed
+
+- Added a target-to-action gate for version-sensitive install, update, and migration commands.
+- Required downstream commands to resolve and match verified versions, dist-tags, Git refs, and channels before mutation.
+- Added regression coverage for stable targets behind canary default branches, explicit canary requests, and continuously updated sources without a release lifecycle.
+- Pinned public install and update examples to the verified stable release tag.
+
 ## 0.2.0 - 2026-08-24
 
 ### Changed
